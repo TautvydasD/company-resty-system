@@ -18,4 +18,4 @@ app.use('/api/users', routes.users)
 //     res.send('{ "varialbes" : 1 }')
 // })
 console.log('Server is online!')
-app.listen(5500);
+app.listen(8080);
