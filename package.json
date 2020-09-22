@@ -6,11 +6,14 @@
   "dependencies": {
     "express": "^4.17.1",
     "jose": "^2.0.0",
-    "mongodb": "^3.6.2"
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.5",
+    "vue": "^2.6.12"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
