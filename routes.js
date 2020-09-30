@@ -1,4 +1,5 @@
 var index = require('./routes/index')
+var api = require('./routes/api')
 var admins = require('./routes/admins')
 var guests = require('./routes/guests')
 var orders = require('./routes/orders')
@@ -7,7 +8,8 @@ var reviews = require('./routes/reviews')
 var users = require('./routes/users')
 
 module.exports = { 
-    index, 
+    index,
+    api, 
     admins, 
     guests,
     orders,

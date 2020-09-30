@@ -14,13 +14,33 @@ router.get('/', (req, res) => {
     res.setHeader("Cache-Control", "max-age=3600")
     res.setHeader("Content-Type", "application/json")
     res.send(admins)
-})
+});
+
 router.get('/:id', (req, res) => {
     if(admins.hasOwnProperty(req.params.id)) {
         res.statusCode = 200
         res.setHeader("Cache-Control", "max-age=3600")
         res.setHeader("Content-Type", "application/json")
         res.send(admins[req.params.id])
+    } else {
+        res.statusCode = 404
+        res.setHeader("Content-Type", "application/json")
+        res.send({message: "Item not found"})
+    }
+});
+
+router.get('/:id/:param', (req, res) => {
+    if(admins.hasOwnProperty(req.params.id)) {
+        if(admins[req.params.id].hasOwnProperty(req.params.param)){
+            res.statusCode = 200
+            res.setHeader("Cache-Control", "max-age=3600")
+            res.setHeader("Content-Type", "application/json")
+            res.send({ [req.params.param]: admins[req.params.id][req.params.param]})
+        } else {
+            res.statusCode = 404
+            res.setHeader("Content-Type", "application/json")
+            res.send({message: "Item parameter not found"})
+        }
     } else {
         res.statusCode = 404
         res.setHeader("Content-Type", "application/json")
@@ -39,6 +59,11 @@ router.post('/', (req, res) => {
     // }
 });
 
+router.post('/:id', (req, res) => {    
+    res.statusCode = 400
+    res.send({ message: "Bad Request"})
+});
+
 router.put('/:id', (req, res) => {
     if(admins.hasOwnProperty(req.params.id)) {
         res.statusCode = 201
@@ -50,6 +75,12 @@ router.put('/:id', (req, res) => {
     }
 });
 
+router.put('/', (req, res) => {
+        res.statusCode = 400
+        res.setHeader("Content-Type", "application/json")
+        res.send({message: "Missing item id"})
+});
+
 router.delete('/:id', (req, res) => {
     if (admins.hasOwnProperty(req.params.id)) {
         res.statusCode = 200
@@ -59,6 +90,12 @@ router.delete('/:id', (req, res) => {
         res.setHeader("Content-Type", "application/json")
         res.send({message: "Item does not exist"})
     }
+});
+
+router.delete('/', (req, res) => {
+    res.statusCode = 400
+    res.setHeader("Content-Type", "application/json")
+    res.send({message: "Missing item id"})
 });
 
 module.exports = router;
