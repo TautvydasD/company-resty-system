@@ -4,16 +4,6 @@ var User = require('../models/users')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 
-// var users = {
-//     "user4" : { id: 4, name: "Lukas",     age: "22", number: "+37063333333", orders: {}},
-//     "user5" : { id: 5, name: "Tomas",     age: "25", number: "+37064444444", 
-//             orders: {   
-//                 "ord4" : { id: 4, data: "2020-03-03",   sum: "111",   products: {}},
-//                 "ord5" : { id: 5, data: "2020-04-01",   sum: "420",   products: {}}
-//             }
-//         }
-// };
-
 router.route('/')
     .all((req, res, next) => {
         next()

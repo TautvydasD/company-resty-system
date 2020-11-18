@@ -24,12 +24,22 @@ const verifyToken = async function (req,res,next) {
         const bearerToken = bearer[1]
         req.token = bearerToken
         jwt.verify(req.token, tokenSecret, async (err, authData) => {
+            
             if (err) {
                 res.statusCode = 403
                 res.send({ error: 'Unauthorized'})
             } else {
+                let currentTime = Math.floor(Date.now() / 1000)
+                var isExpired = (authData.exp - currentTime) < 0 ? true : false
+                
+                if (isExpired) {
+                    res.statusCode = 401
+                    res.send({ error: 'Token Expired'})
+                    return
+                }
+                
                 var userObj = await User.findOne({ name: authData.username})
-                // res.send(userObj)
+
                 if (userObj.status === 'admin') {
                     next()
                 } else {
