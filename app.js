@@ -2,31 +2,61 @@ var express = require('express')
 var routes = require('./routes')
 var app = express()
 
-//app.set('views', './views')
+var mongodb = require('mongodb')
+var mongoose = require('mongoose')
+var mongoClient = mongodb.MongoClient
 
-app.use('/', routes.index);
-app.use('/api/admins?', routes.admins)
-app.use('/api/guests?', routes.guests)
-app.use('/api/orders?', routes.orders)
-app.use('/api/products?', routes.products)
-app.use('/api/reviews?', routes.reviews)
-app.use('/api/users?', routes.users)
-app.use('/', routes.api)
+var url = "mongodb://localhost:27017/test"
+var jwt = require('jsonwebtoken')
+const tokenSecret = 'abcdefghjklmnopasdfddfsdasdafsmd'
 
-// router.route('/')
-//     .all((req, res, next) => {
-//         res.statusCode = 200
-//         res.setHeader("Content-Type", "application/json")
-//         res.send('{ "message" : "Welcome to api" }')
-// });
+var User = require('./models/users')
 
-app.route('/api/:id')
-   .all((req, res, next) => {
-    res.statusCode = 404
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
+const verifyToken = async function (req,res,next) {
+    const bearerHeader = req.headers['authorization']
+    if (typeof bearerHeader !== 'undefined') {
+        
+        const bearer = bearerHeader.split(' ')
+        const bearerToken = bearer[1]
+        req.token = bearerToken
+        jwt.verify(req.token, tokenSecret, async (err, authData) => {
+            if (err) {
+                res.statusCode = 403
+                res.send({ error: 'Unauthorized'})
+            } else {
+                var userObj = await User.findOne({ name: authData.username})
+                // res.send(userObj)
+                if (userObj.status === 'admin') {
+                    next()
+                } else {
+                    res.statusCode = 403
+                    res.send({ error: 'Unauthorized'})
+                }
+            }
+        })
+    } else {
+        res.statusCode = 403
+        res.send({ error: 'Unauthorized'})
+    }
+}
+
+// app.set('views', './views')
+app.use(express.json())
+app.use('/', routes.index)
+app.use('/api', routes.api)
+app.use('/api/admins?', verifyToken, routes.admins)
+app.use('/api/guests?', verifyToken, routes.guests)
+app.use('/api/orders?', verifyToken, routes.orders)
+app.use('/api/products?', verifyToken, routes.products)
+app.use('/api/reviews?', verifyToken, routes.reviews)
+app.use('/api/users?', verifyToken, routes.users)
+app.use((req, res, next) => {
+    return res.status(404).json({ message: 'Not found'})
+})
 
 console.log('Server is online!')
 app.listen(8080);

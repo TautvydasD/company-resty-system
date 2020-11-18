@@ -5,9 +5,11 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
-    "jose": "^2.0.0",
-    "mongodb": "^3.6.2",
-    "mongoose": "^5.10.5",
+    "express-jwt": "^6.0.0",
+    "jose": "^2.0.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.10.15",
     "vue": "^2.6.12"
   },
   "devDependencies": {},

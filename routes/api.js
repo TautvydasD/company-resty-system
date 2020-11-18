@@ -1,46 +1,29 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
+var jwt = require('jsonwebtoken')
+var User = require('../models/users')
+var bodyParser = require('body-parser')
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+// router.use(jwt({secret: ''}))
+const tokenSecret = 'abcdefghjklmnopasdfddfsdasdafsmd'
 
+router.post('/login', urlencodedParser, async (req, res) => {
+    const { username, password } = req.body
 
-router.route('/api')
-    .all((req, res, next) => {
-        res.statusCode = 200
+    loggedUser = await User.findOne({ name: username, password: password})
+
+    if (loggedUser) {
+        const accessToken = jwt.sign({
+            username: loggedUser.name,
+            exp: Math.floor(Date.now() / 1000) + (60 * 60)
+        }, tokenSecret)
+        res.send({ jwt: accessToken})
+    } else {
+        res.statusCode = 401
         res.setHeader("Content-Type", "application/json")
-        res.send('{ "message" : "Welcome to api" }')
-});
+        res.send({ error: 'Incorrect Credentials' })
+    }
+})
 
-router.route('/api/:id')
-   .all((req, res, next) => {
-    res.statusCode = 404
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
 
-router.route('/api/:id/:param')
-   .all((req, res, next) => {
-    res.statusCode = 404
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
-
-router.route('/api/:id/:param/:para')
-   .all((req, res, next) => {
-    res.statusCode = 400
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
-router.route('/api/:id/:param/:para/:par')
-   .all((req, res, next) => {
-    res.statusCode = 400
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
-
-router.route('/api/:id/:param/:para/:par')
-   .all((req, res, next) => {
-    res.statusCode = 400
-    res.setHeader("Content-Type", "application/json")
-    res.send('{ "message" : "Made a typo or method is not existant" }')
-});
-
-module.exports = router;
+module.exports = router

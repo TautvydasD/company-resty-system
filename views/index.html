@@ -23,62 +23,33 @@
     </style>
 
     <body>
-        <h1>API ROUTES</h1>
+        <div id="root">
+            <button @click="doing" :title="title">
+                Hello
+            </button>
+            This is text value: {{ text }}
 
-        <h2>GET without id</h2>
-        <ul>
-            <li>http://(ip-address)/api/admins/</li>
-            <li>http://(ip-address)/api/guests/</li>
-            <li>http://(ip-address)/api/orders/</li>
-            <li>http://(ip-address)/api/products/</li>
-            <li>http://(ip-address)/api/reviews/</li>
-            <li>http://(ip-address)/api/users/</li>
-        </ul>
+        </div>
 
-        <h2>GET with id</h2>
-        <ul>
-            <li>http://(ip-address)/api/admins/id</li>
-            <li>http://(ip-address)/api/guests/id</li>
-            <li>http://(ip-address)/api/orders/id</li>
-            <li>http://(ip-address)/api/products/id</li>
-            <li>http://(ip-address)/api/reviews/id</li>
-            <li>http://(ip-address)/api/users/id</li>
-        </ul>
 
-        <h2>POST</h2>
-        <ul>
-            <li>http://(ip-address)/api/admins/</li>
-            <li>http://(ip-address)/api/guests/</li>
-            <li>http://(ip-address)/api/orders/</li>
-            <li>http://(ip-address)/api/products/</li>
-            <li>http://(ip-address)/api/reviews/</li>
-            <li>http://(ip-address)/api/users/</li>
-        </ul>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script>
+            var app = new Vue({
+                el:'#root',
+                data: {
+                    title: 'I am the button',
+                    text: ''
 
-        <h2>PUT with id</h2>
-        <ul>
-            <li>http://(ip-address)/api/admins/id</li>
-            <li>http://(ip-address)/api/guests/id</li>
-            <li>http://(ip-address)/api/orders/id</li>
-            <li>http://(ip-address)/api/products/id</li>
-            <li>http://(ip-address)/api/reviews/id</li>
-            <li>http://(ip-address)/api/users/id</li>
-        </ul>
-
-        <h2>DELETE with id</h2>
-        <ul>
-            <li>http://(ip-address)/api/admins/id</li>
-            <li>http://(ip-address)/api/guests/id</li>
-            <li>http://(ip-address)/api/orders/id</li>
-            <li>http://(ip-address)/api/products/id</li>
-            <li>http://(ip-address)/api/reviews/id</li>
-            <li>http://(ip-address)/api/users/id</li>
-        </ul>
-        <!-- <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#about">About</a></li>
-        </ul> -->
+                },
+                methods: {
+                    doing() {
+                        alert("hue")
+                        this.text = 'val has changed'
+                    }
+                },
+            })
+            
+        </script>
 
     </body>
 </html>

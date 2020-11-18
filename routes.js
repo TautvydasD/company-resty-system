@@ -9,11 +9,11 @@ var users = require('./routes/users')
 
 module.exports = { 
     index,
-    api, 
     admins, 
     guests,
     orders,
     products,
     reviews,
-    users
+    users,
+    api
 }
