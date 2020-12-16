@@ -17,7 +17,7 @@ router.route('/')
             res.setHeader("Cache-Control", "max-age=3600")
             res.setHeader("Content-Type", "application/json")
             var productList = await Product.find().populate('reviews')
-            res.send(productList)
+            res.json(productList)
         } catch {
             res.send({ error: "Could not get products" })
         }

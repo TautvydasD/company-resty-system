@@ -20,6 +20,9 @@ var productSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Product price is required']
     },
+    picture: {
+        type: String,
+    },
     amount: {
         type: Number,
         default: 0
